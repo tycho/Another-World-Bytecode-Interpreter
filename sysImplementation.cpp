@@ -194,33 +194,50 @@ void SDLStub::processEvents() {
 			break;
 		case SDL_KEYDOWN:
 			if (ev.key.keysym.mod & KMOD_ALT) {
-				if (ev.key.keysym.sym == SDLK_RETURN) {
+				uint8_t s;
+
+				switch (ev.key.keysym.sym) {
+				case SDLK_RETURN:
 					switchGfxMode(!_fullscreen, _scaler);
-				} else if (ev.key.keysym.sym == SDLK_KP_PLUS) {
-					uint8_t s = _scaler + 1;
+					break;
+				case SDLK_KP_PLUS:
+					s = _scaler + 1;
 					if (s < ARRAYSIZE(_scalers)) {
 						switchGfxMode(_fullscreen, s);
 					}
-				} else if (ev.key.keysym.sym == SDLK_KP_MINUS) {
-					int8_t s = _scaler - 1;
+					break;
+				case SDLK_KP_MINUS:
+					s = _scaler - 1;
 					if (_scaler > 0) {
 						switchGfxMode(_fullscreen, s);
 					}
-				} else if (ev.key.keysym.sym == SDLK_x) {
+					break;
+				case SDLK_x:
 					input.quit = true;
+					break;
+				default:
+					break;
 				}
 				break;
 			} else if (ev.key.keysym.mod & KMOD_CTRL) {
-				if (ev.key.keysym.sym == SDLK_s) {
+				switch (ev.key.keysym.sym) {
+				case SDLK_s:
 					input.save = true;
-				} else if (ev.key.keysym.sym == SDLK_l) {
+					break;
+				case SDLK_l:
 					input.load = true;
-				} else if (ev.key.keysym.sym == SDLK_f) {
+					break;
+				case SDLK_f:
 					input.fastMode = true;
-				} else if (ev.key.keysym.sym == SDLK_KP_PLUS) {
+					break;
+				case SDLK_KP_PLUS:
 					input.stateSlot = 1;
-				} else if (ev.key.keysym.sym == SDLK_KP_MINUS) {
+					break;
+				case SDLK_KP_MINUS:
 					input.stateSlot = -1;
+					break;
+				default:
+					break;
 				}
 				break;
 			}
