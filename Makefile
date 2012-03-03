@@ -11,6 +11,10 @@ CXXFLAGS:= -Os -g -std=gnu++98 -fno-rtti -fno-exceptions -Wall -Wno-unknown-prag
 CXXFLAGS+= -Wundef -Wwrite-strings -Wnon-virtual-dtor -Wno-multichar
 CXXFLAGS+= $(SDL_CFLAGS) $(DEFINES)
 
+ifneq ($(debug),)
+CXXFLAGS += -DDEBUG
+endif
+
 SRCS = bank.cpp file.cpp engine.cpp mixer.cpp resource.cpp parts.cpp vm.cpp \
 	serializer.cpp sfxplayer.cpp staticres.cpp util.cpp video.cpp main.cpp sysImplementation.cpp
 

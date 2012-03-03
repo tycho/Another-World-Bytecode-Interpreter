@@ -39,6 +39,8 @@ void Resource::readBank(const MemEntry *me, uint8_t *dstBuf) {
 
 }
 
+/* Only used if we compiled with -DDEBUG */
+#ifdef DEBUG
 static const char *resTypeToString(unsigned int type)
 {
 	static const char* resTypes[]=
@@ -54,6 +56,8 @@ static const char *resTypeToString(unsigned int type)
 		return "RT_UNKNOWN";
 	return resTypes[type];
 }
+
+#endif
 
 #define RES_SIZE 0
 #define RES_COMPRESSED 1
@@ -323,8 +327,9 @@ void Resource::setupPart(uint16_t partId) {
 	debug(DBG_RES,"Loaded resource %d (%s) in segBytecode.",codeIndex,resTypeToString(_memList[codeIndex].type));
 	debug(DBG_RES,"Loaded resource %d (%s) in segCinematic.",videoCinematicIndex,resTypeToString(_memList[videoCinematicIndex].type));
 
-	if (video2Index != MEMLIST_PART_NONE) 
+	if (video2Index != MEMLIST_PART_NONE) {
 		debug(DBG_RES,"Loaded resource %d (%s) in _segVideo2.",video2Index,resTypeToString(_memList[video2Index].type));
+	}
 
 
 
