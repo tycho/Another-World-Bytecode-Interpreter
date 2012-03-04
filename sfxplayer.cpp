@@ -23,8 +23,8 @@
 #include "sys.h"
 
 
-SfxPlayer::SfxPlayer(Mixer *mix, Resource *res, System *stub)
-	: mixer(mix), res(res), sys(stub), _delay(0), _resNum(0) {
+SfxPlayer::SfxPlayer(Mixer *mix, Resource *_res, System *stub)
+	: mixer(mix), res(_res), sys(stub), _delay(0), _resNum(0) {
 }
 
 void SfxPlayer::init() {
