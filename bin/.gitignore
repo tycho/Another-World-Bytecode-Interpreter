@@ -10,5 +10,6 @@
 
 # Output binaries
 /*.exe
-/*.pdb
 /*.ilk
+/*.pdb
+/*.suo

@@ -23,6 +23,12 @@
 #include "sys.h"
 #include "util.h"
 
+#ifdef _WIN32
+#pragma comment (lib, "SDL.lib")
+#pragma comment (lib, "SDLMain.lib")
+#pragma comment (lib, "libpng15.lib")
+#pragma comment (lib, "zdll.lib")
+#endif
 
 struct SDLStub : System {
 	typedef void (SDLStub::*ScaleProc)(uint16_t *dst, uint16_t dstPitch, const uint16_t *src, uint16_t srcPitch, uint16_t w, uint16_t h);

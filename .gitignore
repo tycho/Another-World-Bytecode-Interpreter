@@ -1,12 +1,6 @@
 **/Debug
 **/Release
 TODO
-**/*.obj
-**/ipch
-**/*.opensdf
-**/*.sdf
-**/*.suo
-**/*.user
 **.[ado]
 /game
 
