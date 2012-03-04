@@ -16,9 +16,8 @@ CXXFLAGS += -DDEBUG
 endif
 
 SRCS = bank.cpp file.cpp engine.cpp mixer.cpp resource.cpp parts.cpp vm.cpp \
-	serializer.cpp sfxplayer.cpp staticres.cpp util.cpp video.cpp main.cpp sysImplementation.cpp
-
-# logic.cpp sdlstub.cpp
+	serializer.cpp sfxplayer.cpp staticres.cpp util.cpp video.cpp main.cpp \
+	sysImplementation.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.d)
@@ -29,7 +28,12 @@ game: $(OBJS)
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -MMD -c $< -o $*.o
 
+uncrustify:
+	uncrustify --no-backup -c uncrustify.cfg *.cpp *.h
+
 clean:
 	rm -f *.o *.d
 
 -include $(DEPS)
+
+.PHONY: uncrustify clean
