@@ -32,7 +32,7 @@ uncrustify:
 	uncrustify --no-backup -c uncrustify.cfg *.cpp *.h
 
 clean:
-	rm -f *.o *.d
+	rm -f *.o *.d game
 
 -include $(DEPS)
 
