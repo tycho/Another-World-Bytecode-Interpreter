@@ -7,8 +7,9 @@ DEFINES:= -DAUTO_DETECT_PLATFORM
 #DEFINES = -DSYS_LITTLE_ENDIAN
 
 CXX = g++
-CXXFLAGS:= -Os -g -std=gnu++98 -fno-rtti -fno-exceptions -Wall -pedantic -Wno-unknown-pragmas -Wshadow
-CXXFLAGS+= -Wundef -Wwrite-strings -Wnon-virtual-dtor -Wno-multichar -Wno-variadic-macros -Wextra -W
+CXXFLAGS:= -Os -g -std=gnu++98 -fno-rtti -fno-exceptions -fno-strict-aliasing
+CXXFLAGS+= -Wall -pedantic -Wno-unknown-pragmas -Wshadow -Wundef -Wwrite-strings
+CXXFLAGS+= -Wnon-virtual-dtor -Wno-multichar -Wno-variadic-macros -Wextra
 CXXFLAGS+= $(SDL_CFLAGS) $(DEFINES)
 
 ifneq ($(debug),)
