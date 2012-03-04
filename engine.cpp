@@ -126,7 +126,8 @@ void Engine::saveGameState(uint8_t slot, const char *desc) {
 		warning("Unable to save state file '%s'", stateFile);
 	} else {
 		// header
-		f.writeUint32BE('AWSV');
+		const char *magic = "AWSV";
+		f.writeUint32BE(*(const uint32_t *)magic);
 		f.writeUint16BE(Serializer::CUR_VER);
 		f.writeUint16BE(0);
 		char hdrdesc[32];
@@ -155,7 +156,9 @@ void Engine::loadGameState(uint8_t slot) {
 		warning("Unable to open state file '%s'", stateFile);
 	} else {
 		uint32_t id = f.readUint32BE();
-		if (id != 'AWSV') {
+		const char *magic = "AWSV";
+
+		if (id != *(uint32_t *)magic) {
 			warning("Bad savegame format");
 		} else {
 			// mute
