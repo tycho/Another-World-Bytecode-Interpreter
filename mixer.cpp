@@ -171,4 +171,4 @@ void Mixer::saveOrLoad(Serializer &ser) {
 		ser.saveOrLoadEntries(entries);
 	}
 	sys->unlockMutex(_mutex);
-};
+}
