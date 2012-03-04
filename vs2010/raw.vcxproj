@@ -107,7 +107,7 @@
     <ClCompile Include="..\main.cpp" />
     <ClCompile Include="..\mixer.cpp" />
     <ClCompile Include="..\resource.cpp" />
-    <ClCompile Include="..\sysImplementation.cpp" />
+    <ClCompile Include="..\sys_sdl.cpp" />
     <ClCompile Include="..\serializer.cpp" />
     <ClCompile Include="..\sfxplayer.cpp" />
     <ClCompile Include="..\staticres.cpp" />
