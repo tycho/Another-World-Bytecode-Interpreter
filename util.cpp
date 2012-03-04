@@ -17,6 +17,7 @@
  */
 
 #include <cstdarg>
+#include <ctype.h>
 #include "util.h"
 
 
@@ -56,17 +57,11 @@ void warning(const char *msg, ...) {
 }
 
 void string_lower(char *p) {
-	for (; *p; ++p) {
-		if (*p >= 'A' && *p <= 'Z') {
-			*p += 'a' - 'A';
-		}
-	}
+	for (; *p; ++p)
+		*p = tolower(*p);
 }
 
 void string_upper(char *p) {
-	for (; *p; ++p) {
-		if (*p >= 'a' && *p <= 'z') {
-			*p += 'A' - 'a';
-		}
-	}
+	for (; *p; ++p)
+		*p = toupper(*p);
 }
