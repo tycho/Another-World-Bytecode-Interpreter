@@ -200,7 +200,7 @@ void SfxPlayer::handlePattern(uint8_t channel, const uint8_t *data) {
 	}
 }
 
-uint32_t SfxPlayer::eventsCallback(uint32_t interval, void *param) {
+uint32_t SfxPlayer::eventsCallback(__unused uint32_t interval, void *param) {
 	SfxPlayer *p = (SfxPlayer *)param;
 	p->handleEvents();
 	return p->_delay;

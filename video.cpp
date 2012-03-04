@@ -121,8 +121,7 @@ void Video::readAndDrawPolygon(uint8_t color, uint16_t zoom, const Point &pt) {
 
 }
 
-void Video::fillPolygon(uint16_t color, uint16_t zoom, const Point &pt) {
-
+void Video::fillPolygon(uint16_t color, __unused uint16_t zoom, const Point &pt) {
 	if (polygon.bbw == 0 && polygon.bbh == 1 && polygon.numPoints == 4) {
 		drawPoint(color, pt.x, pt.y);
 
@@ -357,7 +356,7 @@ void Video::drawPoint(uint8_t color, int16_t x, int16_t y) {
 
 /* Blend a line in the current framebuffer (_curPagePtr1)
 */
-void Video::drawLineBlend(int16_t x1, int16_t x2, uint8_t color) {
+void Video::drawLineBlend(int16_t x1, int16_t x2, __unused uint8_t color) {
 	debug(DBG_VIDEO, "drawLineBlend(%d, %d, %d)", x1, x2, color);
 	int16_t xmax = MAX(x1, x2);
 	int16_t xmin = MIN(x1, x2);
@@ -425,7 +424,7 @@ void Video::drawLineN(int16_t x1, int16_t x2, uint8_t color) {
 	
 }
 
-void Video::drawLineP(int16_t x1, int16_t x2, uint8_t color) {
+void Video::drawLineP(int16_t x1, int16_t x2, __unused uint8_t color) {
 	debug(DBG_VIDEO, "drawLineP(%d, %d, %d)", x1, x2, color);
 	int16_t xmax = MAX(x1, x2);
 	int16_t xmin = MIN(x1, x2);

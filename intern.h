@@ -31,6 +31,12 @@
 #define MIN(x,y) ((x)<(y)?(x):(y))
 #define ARRAYSIZE(a) (sizeof(a)/sizeof(a[0]))
 
+#ifdef __GNUC__
+#define __unused __attribute__((unused))
+#else
+#define __unused
+#endif
+
 template<typename T>
 inline void SWAP(T &a, T &b) {
 	T tmp = a; 
