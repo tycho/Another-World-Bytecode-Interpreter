@@ -20,6 +20,15 @@
 #include "sys.h"
 #include "util.h"
 
+#include <SDL_main.h>
+
+#ifdef DEBUG
+#ifdef _WIN32
+#include <windows.h>
+#include <io.h>
+#include <fcntl.h>
+#endif
+#endif
 
 static const char *USAGE = 
 	"Raw - Another World Interpreter\n"
@@ -45,7 +54,6 @@ static bool parseOption(const char *arg, const char *longCmd, const char **opt) 
 //extern System *System_SDL_create();
 extern System *stub ;//= System_SDL_create();
 
-#undef main
 int main(int argc, char *argv[]) {
 	const char *dataPath = ".";
 	const char *savePath = ".";
@@ -60,12 +68,74 @@ int main(int argc, char *argv[]) {
 			return 0;
 		}
 	}
-	//FCS
-	//g_debugMask = DBG_INFO; // DBG_VM | DBG_BANK | DBG_VIDEO | DBG_SER | DBG_SND
-	g_debugMask = DBG_RES ;
-	//g_debugMask = 0 ;//DBG_INFO |  DBG_VM | DBG_BANK | DBG_VIDEO | DBG_SER | DBG_SND ;
-	
-	Engine* e = new Engine(stub, dataPath, savePath);
+
+#ifdef DEBUG
+	// g_debugMask = DBG_INFO | DBG_VM | DBG_BANK | DBG_VIDEO | DBG_SER | DBG_SND | DBG_RES;
+	g_debugMask = DBG_RES;
+#ifdef _WIN32
+	if (AllocConsole() == TRUE) {
+		CONSOLE_SCREEN_BUFFER_INFO csbi;
+		RECT rect;
+		HWND consoleWindowHandle;
+		HANDLE consoleHandle;
+		FILE *hf;
+		char findWindowFlag[32];
+		int hCrt;
+
+		/* Redirect stdout to the console. */
+		hCrt = _open_osfhandle(( intptr_t )GetStdHandle(STD_OUTPUT_HANDLE), _O_TEXT);
+		hf = _fdopen(hCrt, "w");
+		*stdout = *hf;
+
+		/* Redirect stderr to the console. */
+		hCrt = _open_osfhandle(( intptr_t )GetStdHandle(STD_ERROR_HANDLE), _O_TEXT);
+		hf = _fdopen(hCrt, "w");
+		*stderr = *hf;
+
+		sprintf_s<sizeof(findWindowFlag)>(findWindowFlag, "%s", "Another World Console");
+
+		consoleWindowHandle = NULL;
+		consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+
+		/* We need to know the console's maximum sizes. */
+		GetConsoleScreenBufferInfo(consoleHandle, &csbi);
+
+		/* Set us up for the maximums. */
+		csbi.srWindow.Right = csbi.dwMaximumWindowSize.X - 1;
+		csbi.srWindow.Bottom = csbi.dwMaximumWindowSize.Y - 1;
+		csbi.srWindow.Top = 0;
+		csbi.srWindow.Left = 0;
+
+		/* Our console needs to fill the screen. It gets hairy after this. */
+		SetConsoleWindowInfo(consoleHandle, TRUE, &csbi.srWindow);
+
+		/* We have to cheat to find the window, unfortunately... */
+		SetConsoleTitleA(findWindowFlag);
+		Sleep(1);
+
+		/* Try a few times to find the window or else bail out. */
+		for (int i = 0; i < 50 && !consoleWindowHandle; i++) {
+			consoleWindowHandle = FindWindowA(NULL, findWindowFlag);
+			Sleep(10);
+		}
+
+		if (consoleWindowHandle) {
+			if (GetWindowRect(consoleWindowHandle, &rect))
+				MoveWindow(consoleWindowHandle, 0, 0, rect.right - rect.left, rect.bottom - rect.top - 16, TRUE);
+
+			/* Windows API is kind of clunky and requires a bit of kicking to get it to work. */
+			/* In this case, we have to set the window to be topmost and then immediately after, not topmost, in order */
+			/* to bring the window to the top of the Zorder. Believe me, other methods work -sparingly-. */
+			SetWindowPos(consoleWindowHandle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+			SetWindowPos(consoleWindowHandle, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+		}
+	}
+#endif
+#else
+	g_debugMask = 0;
+#endif
+
+	Engine *e = new Engine(stub, dataPath, savePath);
 	e->init();
 	e->run();
 

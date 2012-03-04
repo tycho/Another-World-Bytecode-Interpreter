@@ -17,6 +17,9 @@
  */
 
 #include <SDL.h>
+#ifdef _WIN32
+#include <windows.h>
+#endif
 #include "sys.h"
 #include "util.h"
 
@@ -88,6 +91,13 @@ const SDLStub::Scaler SDLStub::_scalers[] = {
 
 
 void SDLStub::init(const char *title) {
+	putenv("SDL_VIDEO_WINDOW_POS");
+	putenv("SDL_VIDEO_CENTERED=1");
+
+#ifdef _WIN32
+	SetConsoleTitleA(title);
+#endif
+
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER);
 	SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 	SDL_ShowCursor(SDL_DISABLE);
