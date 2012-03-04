@@ -379,7 +379,7 @@ void SDLStub::point1_tx(uint16_t *dst, uint16_t dstPitch, const uint16_t *src, u
 	while (h--) {
 		memcpy(dst, src, w * 2);
 		dst += dstPitch;
-		src += dstPitch;
+		src += srcPitch;
 	}
 }
 
