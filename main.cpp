@@ -20,7 +20,9 @@
 #include "sys.h"
 #include "util.h"
 
+#ifndef __MINGW32__
 #include <SDL_main.h>
+#endif
 
 #ifdef DEBUG
 #ifdef _WIN32
@@ -92,7 +94,7 @@ int main(int argc, char *argv[]) {
 		hf = _fdopen(hCrt, "w");
 		*stderr = *hf;
 
-		sprintf_s<sizeof(findWindowFlag)>(findWindowFlag, "%s", "Another World Console");
+		sprintf(findWindowFlag, "%s", "Another World Console");
 
 		consoleWindowHandle = NULL;
 		consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
