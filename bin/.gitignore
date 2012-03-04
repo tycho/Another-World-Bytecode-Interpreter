@@ -1,0 +1,14 @@
+# Another World game data
+/BANK*
+/CHKLIST.MS
+/CONFIG.*
+/MEMLIST.BIN
+/MLUV
+/TABVOL.BIN
+/VGUARD.DAT
+/VOL.*
+
+# Output binaries
+/*.exe
+/*.pdb
+/*.ilk
