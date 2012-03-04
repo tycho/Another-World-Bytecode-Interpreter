@@ -421,15 +421,22 @@ void SDLStub::point3_tx(uint16_t *dst, uint16_t dstPitch, const uint16_t *src, u
 }
 
 void SDLStub::scale2x(uint16_t *dst, uint16_t dstPitch, const uint16_t *src, uint16_t srcPitch, uint16_t w, uint16_t h) {
+	uint16_t *p, B, D, E, F, H;
+	int16_t iw, ih;
 	dstPitch >>= 1;
-	while (h--) {
-		uint16_t *p = dst;
-		for (int i = 0; i < w; ++i, p += 2) {
-			uint16_t B = *(src + i - srcPitch);
-			uint16_t D = *(src + i - 1);
-			uint16_t E = *(src + i);
-			uint16_t F = *(src + i + 1);
-			uint16_t H = *(src + i + srcPitch);
+	for (ih = 0; ih < h; ++ih) {
+		p = dst;
+		for (iw = 0; iw < w; ++iw) {
+			/*   B
+			 * D E F
+			 *   H
+			 */
+			B = *(src + ((ih > 0) ? (iw - srcPitch) : 0));
+			D = *(src + ((iw > 0) ? (iw - 1) : 0));
+			E = *(src + iw);
+			F = *(src + ((iw < w - 1) ? iw + 1 : 0));
+			H = *(src + ((ih < h - 1) ? iw + srcPitch : 0));
+
 			if (B != H && D != F) {
 				*(p) = D == B ? D : E;
 				*(p + 1) = B == F ? F : E;
@@ -441,6 +448,8 @@ void SDLStub::scale2x(uint16_t *dst, uint16_t dstPitch, const uint16_t *src, uin
 				*(p + dstPitch) = E;
 				*(p + dstPitch + 1) = E;
 			}
+
+			p += 2;
 		}
 		dst += dstPitch * 2;
 		src += srcPitch;
@@ -448,19 +457,26 @@ void SDLStub::scale2x(uint16_t *dst, uint16_t dstPitch, const uint16_t *src, uin
 }
 
 void SDLStub::scale3x(uint16_t *dst, uint16_t dstPitch, const uint16_t *src, uint16_t srcPitch, uint16_t w, uint16_t h) {
+	uint16_t *p, A, B, C, D, E, F, G, H, I;
+	int16_t ih, iw;
 	dstPitch >>= 1;
-	while (h--) {
-		uint16_t *p = dst;
-		for (int i = 0; i < w; ++i, p += 3) {
-			uint16_t A = *(src + i - srcPitch - 1);
-			uint16_t B = *(src + i - srcPitch);
-			uint16_t C = *(src + i - srcPitch + 1);
-			uint16_t D = *(src + i - 1);
-			uint16_t E = *(src + i);
-			uint16_t F = *(src + i + 1);
-			uint16_t G = *(src + i + srcPitch - 1);
-			uint16_t H = *(src + i + srcPitch);
-			uint16_t I = *(src + i + srcPitch + 1);
+	for (ih = 0; ih < h; ++ih) {
+		p = dst;
+		for (iw = 0; iw < w; ++iw) {
+			/* A B C
+			 * D E F
+			 * G H I
+			 */
+			A = *(src + ((ih > 0 && iw > 0) ? iw - srcPitch - 1 : 0));
+			B = *(src + ((ih > 0) ? iw - srcPitch : 0));
+			C = *(src + ((ih > 0 && iw < (w - 1)) ? iw - srcPitch + 1 : 0));
+			D = *(src + ((iw > 0) ? iw - 1 : 0));
+			E = *(src + iw);
+			F = *(src + ((iw < w - 1) ? iw + 1 : 0));
+			G = *(src + ((ih < (h - 1) && iw > 0) ? iw + srcPitch - 1 : 0));
+			H = *(src + ((ih < (h - 1)) ? iw + srcPitch : 0));
+			I = *(src + ((ih < (h - 1) && iw < (w - 1)) ? iw + srcPitch + 1 : 0));
+
 			if (B != H && D != F) {
 				*(p) = D == B ? D : E;
 				*(p + 1) = (D == B && E != C) || (B == F && E != A) ? B : E;
@@ -482,6 +498,8 @@ void SDLStub::scale3x(uint16_t *dst, uint16_t dstPitch, const uint16_t *src, uin
 				*(p + 2 * dstPitch + 1) = E;
 				*(p + 2 * dstPitch + 2) = E;
 			}
+
+			p += 3;
 		}
 		dst += dstPitch * 3;
 		src += srcPitch;
