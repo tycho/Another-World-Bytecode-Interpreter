@@ -1,4 +1,14 @@
 
+uname_S := $(shell uname -s 2>/dev/null || echo "not")
+
+ifneq (,$(findstring MINGW,$(uname_S)))
+EXE := .exe
+endif
+
+GAME := bin/raw$(EXE)
+
+all: $(GAME)
+
 SDL_CFLAGS = `sdl-config --cflags`
 SDL_LIBS = `sdl-config --libs`
 
@@ -23,7 +33,7 @@ SRCS = bank.cpp file.cpp engine.cpp mixer.cpp resource.cpp parts.cpp vm.cpp \
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.d)
 
-game: $(OBJS)
+$(GAME): $(OBJS)
 	$(CXX) $(LDFLAGS) -o $@ $(OBJS) $(SDL_LIBS) -lz
 
 %.o: %.cpp
@@ -33,7 +43,7 @@ uncrustify:
 	uncrustify --no-backup -c uncrustify.cfg *.cpp *.h
 
 clean:
-	rm -f *.o *.d game
+	rm -f *.o *.d $(GAME)
 
 -include $(DEPS)
 

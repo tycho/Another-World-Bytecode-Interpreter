@@ -9,6 +9,7 @@
 /VOL.*
 
 # Output binaries
+/raw
 /*.exe
 /*.ilk
 /*.pdb
