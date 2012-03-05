@@ -32,9 +32,13 @@
 #define ARRAYSIZE(a) (sizeof(a)/sizeof(a[0]))
 
 #ifdef __GNUC__
+#ifndef __unused
 #define __unused __attribute__((unused))
+#endif
 #else
+#ifndef __unused
 #define __unused
+#endif
 #endif
 
 template<typename T>
