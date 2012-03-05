@@ -97,8 +97,8 @@ const SDLStub::Scaler SDLStub::_scalers[] = {
 
 
 void SDLStub::init(const char *title) {
-	putenv("SDL_VIDEO_WINDOW_POS");
-	putenv("SDL_VIDEO_CENTERED=1");
+	putenv((char *)"SDL_VIDEO_WINDOW_POS");
+	putenv((char *)"SDL_VIDEO_CENTERED=1");
 
 #ifdef _WIN32
 	SetConsoleTitleA(title);
