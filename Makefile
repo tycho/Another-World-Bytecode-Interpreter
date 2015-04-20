@@ -32,6 +32,11 @@ CXXFLAGS+= -Wall -pedantic -Wno-unknown-pragmas -Wshadow -Wundef -Wwrite-strings
 CXXFLAGS+= -Wnon-virtual-dtor -Wno-multichar -Wno-variadic-macros -Wextra
 CXXFLAGS+= $(SDL_CFLAGS) $(DEFINES)
 
+ifdef LTO
+CXXFLAGS += -flto
+LDFLAGS += $(CXXFLAGS) -fuse-ld=gold
+endif
+
 LDFLAGS += -Wl,--sort-common,--as-needed,-z,relro
 
 ifneq ($(debug),)
