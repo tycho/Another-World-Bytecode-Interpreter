@@ -41,6 +41,7 @@ LDFLAGS += -Wl,--sort-common,--as-needed,-z,relro
 
 ifneq ($(debug),)
 CXXFLAGS += -DDEBUG
+CXXFLAGS += -ggdb -fsanitize=address -fsanitize=undefined
 endif
 
 SRCS = bank.cpp file.cpp engine.cpp mixer.cpp resource.cpp parts.cpp vm.cpp \
