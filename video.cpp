@@ -37,15 +37,19 @@ void Polygon::readVertices(const uint8_t *p, uint16_t zoom) {
 }
 
 Video::Video(Resource *resParameter, System *stub) 
-	: res(resParameter), sys(stub) {
+	: res(resParameter), sys(stub), _videoBase(NULL) {
+}
+
+Video::~Video() {
+	free(_videoBase);
 }
 
 void Video::init() {
 
 	paletteIdRequested = NO_PALETTE_CHANGE_REQUESTED;
 
-	uint8_t* tmp = (uint8_t *)malloc(4*VID_PAGE_SIZE);
-	memset(tmp,0,4*VID_PAGE_SIZE);
+	_videoBase = (uint8_t *)malloc(4*VID_PAGE_SIZE);
+	memset(_videoBase,0,4*VID_PAGE_SIZE);
 	
 	/*
 	for (int i = 0; i < 4; ++i) {
@@ -53,7 +57,7 @@ void Video::init() {
 	}
 	*/
 	for (int i = 0; i < 4; ++i) {
-		_pagePtrs[i] = tmp + i * VID_PAGE_SIZE;
+		_pagePtrs[i] = _videoBase + i * VID_PAGE_SIZE;
 	}
 
 	_curPagePtr3 = getPagePtr(1);

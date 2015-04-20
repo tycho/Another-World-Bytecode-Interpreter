@@ -67,6 +67,7 @@ struct Video {
 
 
 	uint8_t paletteIdRequested, currentPaletteId;
+	uint8_t *_videoBase;
 	uint8_t *_pagePtrs[4];
 
 	// I am almost sure that:
@@ -85,6 +86,7 @@ struct Video {
 	uint8_t *_dataBuf;
 
 	Video(Resource *res, System *stub);
+	~Video();
 	void init();
 
 	void setDataBuffer(uint8_t *dataBuf, uint16_t offset);
