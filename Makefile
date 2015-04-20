@@ -55,6 +55,8 @@ uncrustify:
 clean:
 	rm -f *.o *.d $(GAME)
 
+distclean: clean
+
 -include $(DEPS)
 
-.PHONY: uncrustify clean
+.PHONY: uncrustify distclean clean
